@@ -47,5 +47,14 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
+
+
   }
+    //Intake and shooter motor IDs
+    public static final int pickUpID = 31;
+    public static final int upperMotorID = 32;
+    public static final int shooterMotorOne = 33;
+    public static final int shooterMotorTwo = 34;
+    public static final int armMotorOne = 35;
+    public static final int armMotorTwo = 36;
 }

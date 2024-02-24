@@ -15,9 +15,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.intake;
+import frc.robot.commands.shooter;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -33,6 +37,13 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
+  final CommandXboxController intakeXbox = new CommandXboxController(1);
+
+  // Motors defined
+  public static TalonSRX lowerMotor = new TalonSRX(Constants.pickUpID);
+  public static TalonSRX upperMotor = new TalonSRX(Constants.upperMotorID);
+  public static TalonSRX armMotorOne = new TalonSRX(Constants.armMotorOne);
+  public static TalonSRX armMotorTwo = new TalonSRX(Constants.armMotorTwo);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,16 +54,16 @@ public class RobotContainer
     configureBindings();
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
-                                                                   () -> -MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
-                                                                   () -> -MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                OperatorConstants.LEFT_X_DEADBAND),
-                                                                   () -> -MathUtil.applyDeadband(driverXbox.getRightX(),
-                                                                                                OperatorConstants.RIGHT_X_DEADBAND),
-                                                                   driverXbox.getHID()::getYButtonPressed,
-                                                                   driverXbox.getHID()::getAButtonPressed,
-                                                                   driverXbox.getHID()::getXButtonPressed,
-                                                                   driverXbox.getHID()::getBButtonPressed);
+            () -> -MathUtil.applyDeadband(driverXbox.getLeftY(),
+                                        OperatorConstants.LEFT_Y_DEADBAND),
+            () -> -MathUtil.applyDeadband(driverXbox.getLeftX(),
+                                        OperatorConstants.LEFT_X_DEADBAND),
+            () -> -MathUtil.applyDeadband(driverXbox.getRightX(),
+                                        OperatorConstants.RIGHT_X_DEADBAND),
+            driverXbox.getHID()::getYButtonPressed,
+            driverXbox.getHID()::getAButtonPressed,
+            driverXbox.getHID()::getXButtonPressed,
+            driverXbox.getHID()::getBButtonPressed);
 
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
@@ -102,7 +113,46 @@ public class RobotContainer
                                    new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               ));
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+    // Intake and shooter commands
+    // Turns the lower motor and holds note in intake
+    Trigger rightBumper = intakeXbox.rightBumper();
+    rightBumper.whileTrue(new intake(lowerMotor, null, -.15));
+
+    // Turns both upper and lower motor and puts note in shooter
+    Trigger rightTrigger = intakeXbox.rightTrigger();
+    rightTrigger.whileTrue(new intake(lowerMotor, upperMotor, -.15));
+
+    // Reverses intake motors to drop the note
+    Trigger leftBumper = intakeXbox.leftBumper();
+    leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .15));
+
+    // Articulates shooter so it can shoot into the amp
+    // Moves shooter down
+    Trigger povDown = intakeXbox.povDown();
+    povDown.whileTrue(new intake(armMotorOne, armMotorTwo, -.1));
+    // Moves shooter up
+    Trigger povUp = intakeXbox.povUp();
+    povUp.whileTrue(new intake(armMotorOne, armMotorTwo, .1));
+    // Moves shooter down slowly
+    Trigger povLeft = intakeXbox.povLeft();
+    povLeft.whileTrue(new intake(armMotorOne, armMotorTwo, .025));
+    // Moves shooter up slowly
+    Trigger povRight = intakeXbox.povRight();
+    povRight.whileTrue(new intake(armMotorOne, armMotorTwo, -.025));
+
+    //Shooter commands
+    //Shoots note for speaker
+    Trigger AButton = intakeXbox.a();
+    AButton.whileTrue(new shooter(.8));
+    //Shoots note for amp
+    Trigger Ybutton = intakeXbox.y();
+    Ybutton.whileTrue(new shooter(.2));
+    //Shoots note reverse
+    Trigger Bbutton = intakeXbox.b();
+    Bbutton.whileTrue(new shooter(-.1));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
