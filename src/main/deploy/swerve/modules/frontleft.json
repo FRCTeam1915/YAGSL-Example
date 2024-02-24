@@ -15,12 +15,12 @@
     "canbus": null
   },
   "conversionFactor": {
-    "angle": 360,
-    "drive": 1
+    "angle": 28.125,
+    "drive": 0.047286787200699704
   },
   "encoder": {
-    "type": "attached",
-    "id": 0,
+    "type": "cancoder",
+    "id": 21,
     "canbus": null
   },
   "inverted": {
