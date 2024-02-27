@@ -45,8 +45,8 @@ public final class Constants
     // Joystick Deadband
     public static final double LEFT_X_DEADBAND  = 0.1;
     public static final double LEFT_Y_DEADBAND  = 0.1;
-    public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT    = 6;
+    public static final double RIGHT_X_DEADBAND = 0.3;
+    public static final double TURN_CONSTANT    = 1;
 
 
   }
@@ -57,4 +57,6 @@ public final class Constants
     public static final int shooterMotorTwo = 34;
     public static final int armMotorOne = 35;
     public static final int armMotorTwo = 36;
+    public static final int climbOneID = 37; 
+    public static final int climbTwoID = 38;
 }

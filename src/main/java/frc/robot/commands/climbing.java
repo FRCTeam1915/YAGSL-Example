@@ -9,13 +9,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class intake extends Command {
-  /** Creates a new pickUp. */
+public class climbing extends Command {
+  /** Creates a new climbing. */
   private static TalonSRX motorOne;
   private static TalonSRX motorTwo;
   double speed = 0;
 
-  public intake(TalonSRX motorOne, TalonSRX motorTwo, double speed) {
+  public climbing(TalonSRX motorOne, TalonSRX motorTwo, double speed) {
     this.motorOne = motorOne;
     this.motorTwo = motorTwo;
     this.speed = speed;
@@ -30,7 +30,7 @@ public class intake extends Command {
   @Override
   public void execute() {
     motorOne.set(ControlMode.PercentOutput, speed);
-    motorTwo.set(ControlMode.PercentOutput, -speed);
+    motorTwo.set(ControlMode.PercentOutput, speed);
   }
 
   // Called once the command ends or is interrupted.

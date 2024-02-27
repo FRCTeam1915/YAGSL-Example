@@ -15,13 +15,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
+import frc.robot.commands.motorArm;
 import frc.robot.commands.shooter;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -42,8 +45,10 @@ public class RobotContainer
   // Motors defined
   public static TalonSRX lowerMotor = new TalonSRX(Constants.pickUpID);
   public static TalonSRX upperMotor = new TalonSRX(Constants.upperMotorID);
-  public static TalonSRX armMotorOne = new TalonSRX(Constants.armMotorOne);
-  public static TalonSRX armMotorTwo = new TalonSRX(Constants.armMotorTwo);
+  public static TalonFX armMotorOne = new TalonFX(Constants.armMotorOne);
+  public static TalonFX armMotorTwo = new TalonFX(Constants.armMotorTwo);
+  public static TalonSRX climbMotorOne = new TalonSRX(Constants.climbOneID);
+  public static TalonSRX climbMotorTwo = new TalonSRX(Constants.climbTwoID);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -73,7 +78,7 @@ public class RobotContainer
     Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
         () -> -MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> -MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRightX(),
+        () -> -MathUtil.applyDeadband(driverXbox.getRightX(), OperatorConstants.RIGHT_X_DEADBAND),
         () -> -driverXbox.getRightY());
 
     // Applies deadbands and inverts controls because joysticks
@@ -81,18 +86,18 @@ public class RobotContainer
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the angular velocity of the robot
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(//swag DRIP swag
         () -> -MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> -MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRightX());
+        () -> -MathUtil.applyDeadband(driverXbox.getRightX(), OperatorConstants.RIGHT_X_DEADBAND));
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
         () -> -MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> -MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRawAxis(2));
+        () -> -MathUtil.applyDeadband(driverXbox.getRawAxis(2), OperatorConstants.RIGHT_X_DEADBAND));
 
     drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
+        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   /**
@@ -130,16 +135,16 @@ public class RobotContainer
     // Articulates shooter so it can shoot into the amp
     // Moves shooter down
     Trigger povDown = intakeXbox.povDown();
-    povDown.whileTrue(new intake(armMotorOne, armMotorTwo, -.1));
+    povDown.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.1));
     // Moves shooter up
     Trigger povUp = intakeXbox.povUp();
-    povUp.whileTrue(new intake(armMotorOne, armMotorTwo, .1));
+    povUp.whileTrue(new motorArm(armMotorOne, armMotorTwo, .1));
     // Moves shooter down slowly
     Trigger povLeft = intakeXbox.povLeft();
-    povLeft.whileTrue(new intake(armMotorOne, armMotorTwo, .025));
+    povLeft.whileTrue(new motorArm(armMotorOne, armMotorTwo, .025));
     // Moves shooter up slowly
     Trigger povRight = intakeXbox.povRight();
-    povRight.whileTrue(new intake(armMotorOne, armMotorTwo, -.025));
+    povRight.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.025));
 
     //Shooter commands
     //Shoots note for speaker
@@ -151,6 +156,15 @@ public class RobotContainer
     //Shoots note reverse
     Trigger Bbutton = intakeXbox.b();
     Bbutton.whileTrue(new shooter(-.1));
+
+    //Climbing commands
+    //Climb up
+    Trigger climbUp = driverXbox.leftTrigger();
+    climbUp.whileTrue(new climbing(climbMotorOne, climbMotorTwo, 1));
+    //Climb down
+    Trigger climbDown = driverXbox.rightTrigger();
+    climbDown.whileTrue(new climbing(climbMotorOne, climbMotorTwo, -1));
+
   }
 
 

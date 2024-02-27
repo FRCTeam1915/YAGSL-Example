@@ -5,19 +5,20 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class intake extends Command {
-  /** Creates a new pickUp. */
-  private static TalonSRX motorOne;
-  private static TalonSRX motorTwo;
+public class motorArm extends Command {
+  private static com.ctre.phoenix6.hardware.TalonFX  motorOne;
+  private static com.ctre.phoenix6.hardware.TalonFX  motorTwo;
   double speed = 0;
 
-  public intake(TalonSRX motorOne, TalonSRX motorTwo, double speed) {
+  /** Creates a new motorArm. */
+  public motorArm(com.ctre.phoenix6.hardware.TalonFX motorOne, com.ctre.phoenix6.hardware.TalonFX motorTwo, double speed) {
     this.motorOne = motorOne;
-    this.motorTwo = motorTwo;
+    this.motorTwo = motorOne;
     this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -29,15 +30,15 @@ public class intake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorOne.set(ControlMode.PercentOutput, speed);
-    motorTwo.set(ControlMode.PercentOutput, -speed);
+    motorOne.set(speed);
+    motorTwo.set(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motorOne.set(ControlMode.PercentOutput, 0);
-    motorTwo.set(ControlMode.PercentOutput, 0);
+    motorOne.set(0);
+    motorTwo.set(0);
   }
 
   // Returns true when the command should end.
