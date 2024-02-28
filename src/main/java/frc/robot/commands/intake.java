@@ -24,13 +24,14 @@ public class intake extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     motorOne.set(ControlMode.PercentOutput, speed);
-    motorTwo.set(ControlMode.PercentOutput, -speed);
+    motorTwo.set(ControlMode.PercentOutput, speed);
   }
 
   // Called once the command ends or is interrupted.
