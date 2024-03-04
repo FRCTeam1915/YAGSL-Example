@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.704382940071784,
+        "y": 4.053248321165694
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.6029567658419757,
+        "y": 4.126676732781014
+      },
+      "isLocked": false,
+      "linkedName": "NA 1st stop"
+    },
+    {
+      "anchor": {
+        "x": 0.6777587794889373,
+        "y": 4.361647649950041
+      },
+      "prevControl": {
+        "x": 1.7498135890726172,
+        "y": 4.141362415104079
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "NA Shooter"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -58.172553423326825,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Not Amp Side Paths",
+  "previewStartingState": {
+    "rotation": 0.5305013166738023,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

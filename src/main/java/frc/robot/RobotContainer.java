@@ -8,19 +8,26 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.auto.Intake.autoIntake;
+import frc.robot.auto.Intake.autoPickUp;
 import frc.robot.auto.Shooter.autoShooter;
+import frc.robot.auto.Shooter.loadShooter;
+import frc.robot.auto.Intake.autoConstantIntake;
 import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
 import frc.robot.commands.motorArm;
 import frc.robot.commands.shooter;
+import frc.robot.commands.shooterArticulation;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -58,9 +65,18 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
+  public static SendableChooser<String> autoMode = new SendableChooser<>();
+
   public RobotContainer() {
     // Configure the trigger bindings
+
     configureBindings();
+
+    SmartDashboard.putData("Autonomous Setting", autoMode);
+    autoMode.addOption("Amp Side", "Amp Side Auto");
+    // autoMode.setDefaultOption("Position 2 - Middle", "");
+    autoMode.addOption("Not Amp Side", "Not Amp Auto");
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
         () -> -MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -105,7 +121,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shooter", new autoShooter(.8, 2));
     NamedCommands.registerCommand("Intake", new autoIntake(upperMotor, lowerMotor, -.8, 1));
-
+    NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
+    NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
   }
 
   /**
@@ -135,7 +152,7 @@ public class RobotContainer {
     // Intake and shooter commands
     // Turns the lower motor and holds note in intake
     Trigger rightBumper = intakeXbox.rightBumper();
-    rightBumper.whileTrue(new intake(lowerMotor, null, -.5));
+    rightBumper.onTrue(new autoPickUp(lowerMotor, -0.7));
 
     // Turns both upper and lower motor and puts note in shooter
     Trigger rightTrigger = intakeXbox.rightTrigger();
@@ -143,15 +160,15 @@ public class RobotContainer {
 
     // Reverses intake motors to drop the note
     Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .15));
+    leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .5));
 
     // Articulates shooter so it can shoot into the amp
     // Moves shooter down
     Trigger povDown = intakeXbox.povDown();
-    povDown.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.1));
+    povDown.whileTrue(new shooterArticulation(armMotorOne, armMotorTwo, true));
     // Moves shooter up
     Trigger povUp = intakeXbox.povUp();
-    povUp.whileTrue(new motorArm(armMotorOne, armMotorTwo, .1));
+    povUp.whileTrue(new shooterArticulation(armMotorOne, armMotorTwo, false));
     // Moves shooter down slowly
     Trigger povLeft = intakeXbox.povLeft();
     povLeft.whileTrue(new motorArm(armMotorOne, armMotorTwo, .025));
@@ -165,10 +182,12 @@ public class RobotContainer {
     AButton.whileTrue(new shooter(.8));
     // Shoots note for amp
     Trigger Ybutton = intakeXbox.y();
-    Ybutton.whileTrue(new shooter(.2));
+    Ybutton.whileTrue(new shooter(.1));
     // Shoots note reverse
     Trigger Bbutton = intakeXbox.b();
     Bbutton.whileTrue(new shooter(-.1));
+    Trigger Xbutton = intakeXbox.x();
+    Xbutton.onTrue(new loadShooter());
 
     // Climbing commands
     // Climb up
@@ -187,7 +206,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("Amp Side Auto");
   }
 
   public void setDriveMode() {

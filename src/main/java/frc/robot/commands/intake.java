@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class intake extends Command {
   /** Creates a new pickUp. */
-  private static TalonSRX motorOne;
-  private static TalonSRX motorTwo;
+  public static TalonSRX motorOne;
+  public static TalonSRX motorTwo;
   double speed = 0;
 
   public intake(TalonSRX motorOne, TalonSRX motorTwo, double speed) {

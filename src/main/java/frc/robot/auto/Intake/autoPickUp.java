@@ -8,23 +8,21 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 // Run multiple commands in a routine
-public class autoIntake extends SequentialCommandGroup {
+public class autoPickUp extends SequentialCommandGroup {
   double in;
-  int time;
+
   private static TalonSRX motorOne;
-  private static TalonSRX motorTwo;
 
   // Routine command constructor
-  public autoIntake(TalonSRX motorOne, TalonSRX motorTwo, double in, int time) {
+  public autoPickUp(TalonSRX motorOne, double in) {
     this.in = in;
-    this.time = time;
+
     this.motorOne = motorOne;
-    this.motorTwo = motorTwo;
     addCommands(
-        new WaitCommand(1),
-        new autoIntakeStart(motorOne, motorTwo, in),
-        new WaitCommand(time),
-        new autoIntakeStop(motorOne, motorTwo)
+
+        new autoConstantIntakeStart(motorOne, in),
+        new intakeSensor(3),
+        new autoConstantIntakeStop(motorOne)
 
     );
   }

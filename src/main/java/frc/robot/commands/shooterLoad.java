@@ -6,23 +6,18 @@ package frc.robot.commands;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.commands.shooter;
+import frc.robot.auto.Shooter.loadShooter;
 
-public class shooter extends Command {
+public class shooterLoad extends Command {
   /** Creates a new shooter. */
-  public static CANSparkFlex shooterMotorOne = new CANSparkFlex(Constants.shooterMotorOne,
-      CANSparkLowLevel.MotorType.kBrushless);
-  public static CANSparkFlex shooterMotorTwo = new CANSparkFlex(Constants.shooterMotorTwo,
-      CANSparkLowLevel.MotorType.kBrushless);
 
-  double in;
-
-  public shooter(double in) {
+  public shooterLoad() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.in = in;
+
   }
 
   // Called when the command is initially scheduled.
@@ -33,17 +28,12 @@ public class shooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterMotorOne.setIdleMode(IdleMode.kBrake);
-    shooterMotorTwo.setIdleMode(IdleMode.kBrake);
-    shooterMotorOne.set(in);
-    shooterMotorTwo.set(-in);
+    new loadShooter();
+    // Called once the command ends or is interrupted.
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterMotorOne.set(0);
-    shooterMotorTwo.set(0);
   }
 
   // Returns true when the command should end.
