@@ -39,6 +39,24 @@ public final class Constants
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
+  public static final class ArmConstants {
+    public static final int armMotorOne = 35;
+    public static final int armMotorTwo = 36;
+
+    public static final int kEncoderChannel = 4;
+    //public static final double kP = 3;
+    //public static final double kI = 0;
+    //public static final double kD = 0.8;
+    public static final double kP = 0.01;
+    public static final double kI = 0;
+    public static final double kD = 0.008;
+
+    public static final double setPoint1 = 0;
+    public static final double setPoint2 = 0.01;
+
+}
+
+
   public static class OperatorConstants
   {
 
@@ -55,8 +73,6 @@ public final class Constants
     public static final int upperMotorID = 32;
     public static final int shooterMotorOne = 33;
     public static final int shooterMotorTwo = 34;
-    public static final int armMotorOne = 35;
-    public static final int armMotorTwo = 36;
     public static final int climbOneID = 37; 
     public static final int climbTwoID = 38;
 }
