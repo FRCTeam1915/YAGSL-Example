@@ -43,7 +43,7 @@ public final class Constants
     public static final int armMotorOne = 35;
     public static final int armMotorTwo = 36;
 
-    public static final int kEncoderChannel = 4;
+    public static final int kEncoderChannel = 2;
     //public static final double kP = 3;
     //public static final double kI = 0;
     //public static final double kD = 0.8;
@@ -51,8 +51,8 @@ public final class Constants
     public static final double kI = 0;
     public static final double kD = 0.008;
 
-    public static final double setPoint1 = 0;
-    public static final double setPoint2 = 0.01;
+    public static final double setPoint1 = 0.502;
+    public static final double setPoint2 = 0.707;
 
 }
 

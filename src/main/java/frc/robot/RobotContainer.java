@@ -31,7 +31,6 @@ import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
 import frc.robot.commands.motorArm;
 import frc.robot.commands.shooter;
-import frc.robot.commands.shooterArticulation;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
