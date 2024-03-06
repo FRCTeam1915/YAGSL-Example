@@ -74,6 +74,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Autonomous Setting": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "XModules": {
           "arrowColor": [
@@ -99,8 +104,14 @@
     }
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
     "transitory": {
       "SmartDashboard": {
+        "Autonomous Setting": {
+          "open": true
+        },
         "Field": {
           "open": true
         },

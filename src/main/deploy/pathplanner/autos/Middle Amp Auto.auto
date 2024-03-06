@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 0.85,
-      "y": 4.41
-    },
-    "rotation": -58.29810893462508
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -37,7 +31,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "NA To First Note "
+                  "pathName": "MA To First Note"
                 }
               },
               {
@@ -52,7 +46,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NA From First Note"
+            "pathName": "MA From First Note"
           }
         },
         {
@@ -79,15 +73,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "LongIntakeConstant"
+                  "pathName": "MA To Second Note"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "NA To 2nd Note"
+                  "name": "LongIntakeConstant"
                 }
               }
             ]
@@ -96,7 +90,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NA From 2nd Note"
+            "pathName": "MA From Second Note"
           }
         },
         {

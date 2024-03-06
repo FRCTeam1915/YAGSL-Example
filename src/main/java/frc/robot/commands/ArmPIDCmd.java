@@ -1,20 +1,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.Constants.ArmConstants;
 
-
-public class ArmPIDCmd extends Command{
+public class ArmPIDCmd extends Command {
     private final ArmSubsystem armSubsystem;
     private final PIDController pidController;
+    private double setpoint;
 
     public ArmPIDCmd(ArmSubsystem armSubsystem, double setpoint) {
         this.armSubsystem = armSubsystem;
+        this.setpoint = setpoint;
         this.pidController = new PIDController(//
                 ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
         pidController.setSetpoint(setpoint);
+
         addRequirements(armSubsystem);
     }
 
@@ -27,7 +30,9 @@ public class ArmPIDCmd extends Command{
     @Override
     public void execute() {
         double speed = pidController.calculate(armSubsystem.getEncoder());
+        SmartDashboard.putNumber("Arm speed value -------", speed);
         armSubsystem.setMotor(speed);
+        SmartDashboard.putNumber("Arm setpoint value", this.setpoint);
     }
 
     @Override
@@ -39,5 +44,5 @@ public class ArmPIDCmd extends Command{
     @Override
     public boolean isFinished() {
         return false;
-    }    
+    }
 }

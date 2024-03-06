@@ -6,7 +6,6 @@ import frc.robot.Constants.ArmConstants;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
-
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX motorOne = new TalonFX(ArmConstants.armMotorOne);
     private TalonFX motorTwo = new TalonFX(ArmConstants.armMotorTwo);
@@ -18,12 +17,12 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm encoder value", encoder.get());
+        SmartDashboard.putNumber("Arm encoder value", encoder.getAbsolutePosition());
     }
 
     public void setMotor(double speed) {
         motorOne.set(speed);
-        motorTwo.set(speed);
+        motorTwo.set(-speed);
     }
 
     public double getEncoder() {
