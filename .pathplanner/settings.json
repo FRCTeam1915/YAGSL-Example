@@ -4,8 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "Amp Side Paths",
-    "Middle Right Paths",
     "Middle Not Amp Paths",
+    "Middle Right Paths",
+    "New Folder",
     "Not Amp Side Paths"
   ],
   "autoFolders": [],

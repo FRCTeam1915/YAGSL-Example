@@ -23,7 +23,7 @@ public class autoIntake extends SequentialCommandGroup {
     addCommands(
         new WaitCommand(1.5),
         new autoIntakeStart(motorOne, motorTwo, in),
-        new WaitCommand(time),
+        new intakeSensor(),
         new autoIntakeStop(motorOne, motorTwo)
 
     );

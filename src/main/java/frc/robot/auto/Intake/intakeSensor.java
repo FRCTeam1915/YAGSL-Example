@@ -19,26 +19,29 @@ import frc.robot.Robot;
 
 public class intakeSensor extends Command {
     /** Creates a new shooter. */
-    boolean trig1 = false;
-
     boolean finished = false;
 
     public intakeSensor() {
         // Use addRequirements() here to declare subsystem dependencies.
-
+        boolean finished = false;
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        boolean finished = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        Timer t_timer = new Timer();
+        t_timer.restart();
         if (Robot.intakeSensor.get() == true) {
             finished = true;
-
+        }
+        if (t_timer.get() > 3) {
+            finished = true;
         }
 
     }

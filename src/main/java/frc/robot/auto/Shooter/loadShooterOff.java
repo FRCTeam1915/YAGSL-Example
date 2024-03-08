@@ -38,6 +38,13 @@ public class loadShooterOff extends Command {
     @Override
     public void execute() {
         loadShooter.finished = false;
+        loadShooter.trig1 = false;
+        loadShooter.trig2 = false;
+        loadShooter.cycle = false;
+        shooter.shooterMotorOne.set(0);
+        shooter.shooterMotorTwo.set(0);
+        intake.motorOne.set(ControlMode.PercentOutput, 0);
+        intake.motorTwo.set(ControlMode.PercentOutput, 0);
     }
 
     // Called once the command ends or is interrupted.

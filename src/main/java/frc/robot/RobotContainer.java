@@ -134,6 +134,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", new autoIntake(upperMotor, lowerMotor, -.8, 1));
     NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
     NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
+    NamedCommands.registerCommand("AutoLoad", new loadShooter());
     armSubsystem.setDefaultCommand(new ArmJoystickCmd(armSubsystem, 0));
 
   }
@@ -172,8 +173,8 @@ public class RobotContainer {
     rightTrigger.whileTrue(new intake(lowerMotor, upperMotor, -.75));
 
     // Reverses intake motors to drop the note
-    // Trigger leftBumper = intakeXbox.leftBumper();
-    // leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .5));
+    Trigger xButton = intakeXbox.x();
+    xButton.whileTrue(new intake(lowerMotor, upperMotor, .5));
 
     // Articulates shooter so it can shoot into the amp
     // Moves shooter down slowly
@@ -189,8 +190,6 @@ public class RobotContainer {
     // Moves shooter to set amp
     Trigger povDown = intakeXbox.povDown();
     povDown.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
-    Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
     // Moves shooter to set intake
     Trigger povUp = intakeXbox.povUp();
     povUp.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint2).repeatedly());
@@ -205,9 +204,9 @@ public class RobotContainer {
     // Shoots note reverse
     Trigger leftTrigger = intakeXbox.leftTrigger();
     leftTrigger.whileTrue(new shooter(-.1));
-    Trigger Xbutton = intakeXbox.x();
-    Xbutton.whileTrue(new loadShooter());
-    Xbutton.onFalse(new loadShooterOff());
+    Trigger leftBumper = intakeXbox.leftBumper();
+    leftBumper.whileTrue(new loadShooter());
+    leftBumper.onFalse(new loadShooterOff());
 
     // Climbing commands
     // Climb up

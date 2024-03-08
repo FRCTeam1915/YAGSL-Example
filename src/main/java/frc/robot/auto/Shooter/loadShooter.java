@@ -20,9 +20,9 @@ import frc.robot.auto.Shooter.autoShooterStop;
 
 public class loadShooter extends Command {
     /** Creates a new shooter. */
-    boolean trig1 = false;
-    boolean trig2 = false;
-    boolean cycle = false;
+    public static boolean trig1 = false;
+    public static boolean trig2 = false;
+    public static boolean cycle = false;
     public static boolean finished = false;
 
     public loadShooter() {
@@ -37,24 +37,30 @@ public class loadShooter extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.shooterMotorOne.set(0.1);
-        shooter.shooterMotorTwo.set(-0.1);
-        shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
-        shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
-        intake.motorOne.set(ControlMode.PercentOutput, -.4);
-        intake.motorTwo.set(ControlMode.PercentOutput, -.4);
-        if (Robot.shooterSensor.get() == false) {
-            cycle = true;
+        if (Robot.shooterSensor.get() == false && trig1 == false && trig2 == false) {
+            shooter.shooterMotorOne.set(0.1);
+            shooter.shooterMotorTwo.set(-0.1);
+            shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
+            shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
+            intake.motorOne.set(ControlMode.PercentOutput, -.4);
+            intake.motorTwo.set(ControlMode.PercentOutput, -.4);
         }
-        if (Robot.shooterSensor.get() == true && finished == false) {
+        if (Robot.shooterSensor.get() == false && trig1 && trig2 == false) {
+            trig2 = true;
+        }
+        if (Robot.shooterSensor.get() && finished == false) {
             if (trig1 == false && trig2 == false) {
                 trig1 = true;
-            } else if (trig1 == true && trig2 == false && cycle == true) {
-                trig2 = true;
-            } else if (trig1 == true && trig2 == true) {
-                trig1 = false;
-                trig2 = false;
-                cycle = false;
+                shooter.shooterMotorOne.set(0.1);
+                shooter.shooterMotorTwo.set(-0.1);
+                shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
+                shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
+                intake.motorOne.set(ControlMode.PercentOutput, -.4);
+                intake.motorTwo.set(ControlMode.PercentOutput, -.4);
+            } else if (trig1 && trig2) {
+                cycle = true;
+            } else if (trig1 && trig2 && cycle) {
+
                 finished = true;
                 shooter.shooterMotorOne.set(0);
                 shooter.shooterMotorTwo.set(0);
