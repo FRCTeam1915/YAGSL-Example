@@ -1,0 +1,84 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.413628281802018,
+        "y": 5.53650223579517
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8893943242431936,
+        "y": 4.356524349412336
+      },
+      "isLocked": false,
+      "linkedName": "Middle Start"
+    },
+    {
+      "anchor": {
+        "x": 2.523749047498095,
+        "y": 3.3023760592975733
+      },
+      "prevControl": {
+        "x": 1.8966419409998434,
+        "y": 4.081309096842769
+      },
+      "nextControl": {
+        "x": 3.409979910868912,
+        "y": 2.201584039531716
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.1544553998198905,
+        "y": 1.9310504075553612
+      },
+      "prevControl": {
+        "x": 4.4196325037315285,
+        "y": 1.9857712615193879
+      },
+      "nextControl": {
+        "x": 6.031357517260489,
+        "y": 1.8657491860438276
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.195626573075355,
+        "y": 2.4441314337161257
+      },
+      "prevControl": {
+        "x": 7.010875839937524,
+        "y": 2.4721176715067834
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "MN Second Amp"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Middle Not Amp Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

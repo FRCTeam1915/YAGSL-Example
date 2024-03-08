@@ -21,7 +21,7 @@ public class autoPickUp extends SequentialCommandGroup {
     addCommands(
 
         new autoConstantIntakeStart(motorOne, in),
-        new intakeSensor(3),
+        new intakeSensor(),
         new autoConstantIntakeStop(motorOne)
 
     );

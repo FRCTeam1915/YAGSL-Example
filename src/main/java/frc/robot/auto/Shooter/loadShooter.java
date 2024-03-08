@@ -20,6 +20,10 @@ import frc.robot.auto.Shooter.autoShooterStop;
 
 public class loadShooter extends Command {
     /** Creates a new shooter. */
+    boolean trig1 = false;
+    boolean trig2 = false;
+    boolean cycle = false;
+    public static boolean finished = false;
 
     public loadShooter() {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -33,26 +37,31 @@ public class loadShooter extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        Timer t2_timer = new Timer();
-        t2_timer.restart();
         shooter.shooterMotorOne.set(0.1);
         shooter.shooterMotorTwo.set(-0.1);
         shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
         shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
-        intake.motorOne.set(ControlMode.PercentOutput, -.3);
-        intake.motorTwo.set(ControlMode.PercentOutput, -.3);
-        while (Robot.shooterSensor.get() != true && t2_timer.get() < 6) {
+        intake.motorOne.set(ControlMode.PercentOutput, -.4);
+        intake.motorTwo.set(ControlMode.PercentOutput, -.4);
+        if (Robot.shooterSensor.get() == false) {
+            cycle = true;
         }
-        while (Robot.shooterSensor.get()) {
+        if (Robot.shooterSensor.get() == true && finished == false) {
+            if (trig1 == false && trig2 == false) {
+                trig1 = true;
+            } else if (trig1 == true && trig2 == false && cycle == true) {
+                trig2 = true;
+            } else if (trig1 == true && trig2 == true) {
+                trig1 = false;
+                trig2 = false;
+                cycle = false;
+                finished = true;
+                shooter.shooterMotorOne.set(0);
+                shooter.shooterMotorTwo.set(0);
+                intake.motorOne.set(ControlMode.PercentOutput, 0);
+                intake.motorTwo.set(ControlMode.PercentOutput, 0);
+            }
         }
-        while (Robot.shooterSensor.get() != true && t2_timer.get() < 8) {
-        }
-        shooter.shooterMotorOne.set(0);
-        shooter.shooterMotorTwo.set(0);
-        intake.motorOne.set(ControlMode.PercentOutput, 0);
-        intake.motorTwo.set(ControlMode.PercentOutput, 0);
-        t2_timer.stop();
-
     }
 
     // Called once the command ends or is interrupted.
@@ -60,6 +69,6 @@ public class loadShooter extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return true;
+        return finished;
     }
 }

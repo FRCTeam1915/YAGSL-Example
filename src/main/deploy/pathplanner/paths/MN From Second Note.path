@@ -1,0 +1,84 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.195626573075355,
+        "y": 2.4441314337161257
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.4773131364444545,
+        "y": 2.3508439744152216
+      },
+      "isLocked": false,
+      "linkedName": "MN Second Amp"
+    },
+    {
+      "anchor": {
+        "x": 5.5555914748193125,
+        "y": 1.8191054563927318
+      },
+      "prevControl": {
+        "x": 6.301891149236844,
+        "y": 1.7444754889509784
+      },
+      "nextControl": {
+        "x": 4.316810468181513,
+        "y": 1.9429835570565122
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.6170365068002863,
+        "y": 3.395663518599765
+      },
+      "prevControl": {
+        "x": 3.4990998652048204,
+        "y": 2.50572459449519
+      },
+      "nextControl": {
+        "x": 1.5722169626157434,
+        "y": 4.449811808714527
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.413628281802018,
+        "y": 5.53650223579517
+      },
+      "prevControl": {
+        "x": 1.4509432655228947,
+        "y": 5.140139007550743
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Middle Start"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Middle Not Amp Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -21,7 +21,7 @@ public class autoIntake extends SequentialCommandGroup {
     this.motorOne = motorOne;
     this.motorTwo = motorTwo;
     addCommands(
-        new WaitCommand(1),
+        new WaitCommand(1.5),
         new autoIntakeStart(motorOne, motorTwo, in),
         new WaitCommand(time),
         new autoIntakeStop(motorOne, motorTwo)

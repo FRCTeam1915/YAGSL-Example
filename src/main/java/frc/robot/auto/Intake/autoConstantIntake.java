@@ -31,7 +31,7 @@ public class autoConstantIntake extends SequentialCommandGroup {
     addCommands(
         new WaitCommand(time),
         new autoConstantIntakeStart(motorOne, in),
-        new intakeSensor(2),
+        new intakeSensor(),
         new autoConstantIntakeStop(motorOne)
 
     );

@@ -49,10 +49,10 @@ public final class Constants {
     // public static final double kI = 0;
     // public static final double kD = 0.8;
     public static final double kP = 2;
-    public static final double kI = 0.1;
-    public static final double kD = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0;
 
-    public static final double setPoint1 = 0.5; // Originally 0.502
+    public static final double setPoint1 = 0.452; // Originally 0.502
     public static final double setPoint2 = 0.712; // Originally 0.709
 
   }

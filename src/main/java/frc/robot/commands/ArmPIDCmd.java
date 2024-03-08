@@ -29,7 +29,13 @@ public class ArmPIDCmd extends Command {
 
     @Override
     public void execute() {
-        double speed = pidController.calculate(armSubsystem.getEncoder());
+        double speed = 0;
+        double encval = armSubsystem.getEncoder();
+        if (encval > .75 || encval < .4) {
+            speed = 0;
+        } else {
+            speed = pidController.calculate(armSubsystem.getEncoder());
+        }
         SmartDashboard.putNumber("Arm speed value -------", speed);
         armSubsystem.setMotor(speed);
         SmartDashboard.putNumber("Arm setpoint value", this.setpoint);

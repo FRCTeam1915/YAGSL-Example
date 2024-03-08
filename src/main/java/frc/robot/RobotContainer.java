@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,12 +25,14 @@ import frc.robot.auto.Intake.autoIntake;
 import frc.robot.auto.Intake.autoPickUp;
 import frc.robot.auto.Shooter.autoShooter;
 import frc.robot.auto.Shooter.loadShooter;
+import frc.robot.auto.Shooter.loadShooterOff;
 import frc.robot.auto.Intake.autoConstantIntake;
 import frc.robot.commands.ArmJoystickCmd;
 import frc.robot.commands.ArmPIDCmd;
 import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
 import frc.robot.commands.motorArm;
+import frc.robot.commands.pickUp;
 import frc.robot.commands.shooter;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsystem;
@@ -81,8 +84,10 @@ public class RobotContainer {
 
     SmartDashboard.putData("Autonomous Setting", autoMode);
     autoMode.addOption("Amp Side", "Amp Side Auto");
-    autoMode.setDefaultOption("Middle", "Middle Amp Auto");
+    autoMode.setDefaultOption("Middle Amp Side", "Middle Amp Auto");
+    autoMode.addOption("Middle Not Amp Side", "Middle Not Amp Side");
     autoMode.addOption("Not Amp Side", "Not Amp Auto");
+    autoMode.addOption("One Note", "One Note Auto");
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
         () -> -MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -125,7 +130,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
 
-    NamedCommands.registerCommand("Shooter", new autoShooter(.8, 2));
+    NamedCommands.registerCommand("Shooter", new autoShooter(.85, 2));
     NamedCommands.registerCommand("Intake", new autoIntake(upperMotor, lowerMotor, -.8, 1));
     NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
     NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
@@ -160,15 +165,15 @@ public class RobotContainer {
     // Intake and shooter commands
     // Turns the lower motor and holds note in intake
     Trigger rightBumper = intakeXbox.rightBumper();
-    rightBumper.onTrue(new autoPickUp(lowerMotor, -0.7));
+    rightBumper.whileTrue(new pickUp(lowerMotor, -0.7));
 
     // Turns both upper and lower motor and puts note in shooter
     Trigger rightTrigger = intakeXbox.rightTrigger();
     rightTrigger.whileTrue(new intake(lowerMotor, upperMotor, -.75));
 
     // Reverses intake motors to drop the note
-    Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .5));
+    // Trigger leftBumper = intakeXbox.leftBumper();
+    // leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .5));
 
     // Articulates shooter so it can shoot into the amp
     // Moves shooter down slowly
@@ -181,10 +186,12 @@ public class RobotContainer {
     // povRight.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.025));
     povRight.whileTrue(new ArmJoystickCmd(armSubsystem, -0.025));
 
-    // Moves shooter to set point 1
+    // Moves shooter to set amp
     Trigger povDown = intakeXbox.povDown();
     povDown.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
-    // Moves shooter to set point 2
+    Trigger leftBumper = intakeXbox.leftBumper();
+    leftBumper.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
+    // Moves shooter to set intake
     Trigger povUp = intakeXbox.povUp();
     povUp.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint2).repeatedly());
 
@@ -196,10 +203,11 @@ public class RobotContainer {
     Trigger Ybutton = intakeXbox.y();
     Ybutton.whileTrue(new shooter(.1));
     // Shoots note reverse
-    Trigger Bbutton = intakeXbox.b();
-    Bbutton.whileTrue(new shooter(-.1));
+    Trigger leftTrigger = intakeXbox.leftTrigger();
+    leftTrigger.whileTrue(new shooter(-.1));
     Trigger Xbutton = intakeXbox.x();
-    Xbutton.onTrue(new loadShooter());
+    Xbutton.whileTrue(new loadShooter());
+    Xbutton.onFalse(new loadShooterOff());
 
     // Climbing commands
     // Climb up
