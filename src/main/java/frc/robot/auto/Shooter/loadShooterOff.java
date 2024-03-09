@@ -40,7 +40,6 @@ public class loadShooterOff extends Command {
         loadShooter.finished = false;
         loadShooter.trig1 = false;
         loadShooter.trig2 = false;
-        loadShooter.cycle = false;
         shooter.shooterMotorOne.set(0);
         shooter.shooterMotorTwo.set(0);
         intake.motorOne.set(ControlMode.PercentOutput, 0);

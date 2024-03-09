@@ -31,7 +31,7 @@ public class ArmPIDCmd extends Command {
     public void execute() {
         double speed = 0;
         double encval = armSubsystem.getEncoder();
-        if (encval > .75 || encval < .4) {
+        if (encval > .9 || encval < .5) {
             speed = 0;
         } else {
             speed = pidController.calculate(armSubsystem.getEncoder());

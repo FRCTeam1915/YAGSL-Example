@@ -22,7 +22,6 @@ public class loadShooter extends Command {
     /** Creates a new shooter. */
     public static boolean trig1 = false;
     public static boolean trig2 = false;
-    public static boolean cycle = false;
     public static boolean finished = false;
 
     public loadShooter() {
@@ -45,27 +44,21 @@ public class loadShooter extends Command {
             intake.motorOne.set(ControlMode.PercentOutput, -.4);
             intake.motorTwo.set(ControlMode.PercentOutput, -.4);
         }
-        if (Robot.shooterSensor.get() == false && trig1 && trig2 == false) {
-            trig2 = true;
-        }
+        Timer w_Timer = new Timer();
+        w_Timer.restart();
         if (Robot.shooterSensor.get() && finished == false) {
-            if (trig1 == false && trig2 == false) {
-                trig1 = true;
-                shooter.shooterMotorOne.set(0.1);
-                shooter.shooterMotorTwo.set(-0.1);
-                shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
-                shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
-                intake.motorOne.set(ControlMode.PercentOutput, -.4);
-                intake.motorTwo.set(ControlMode.PercentOutput, -.4);
-            } else if (trig1 && trig2) {
-                cycle = true;
-            } else if (trig1 && trig2 && cycle) {
+            System.out.println("seen");
+            w_Timer.restart();
 
-                finished = true;
-                shooter.shooterMotorOne.set(0);
-                shooter.shooterMotorTwo.set(0);
-                intake.motorOne.set(ControlMode.PercentOutput, 0);
-                intake.motorTwo.set(ControlMode.PercentOutput, 0);
+            if (w_Timer.get() > 1.0) {
+                if (Robot.shooterSensor.get()) {
+                    System.out.println("trig1");
+                    finished = true;
+                    shooter.shooterMotorOne.set(0);
+                    shooter.shooterMotorTwo.set(0);
+                    intake.motorOne.set(ControlMode.PercentOutput, 0);
+                    intake.motorTwo.set(ControlMode.PercentOutput, 0);
+                }
             }
         }
     }

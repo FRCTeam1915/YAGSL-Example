@@ -39,6 +39,7 @@ public class intakeSensor extends Command {
         t_timer.restart();
         if (Robot.intakeSensor.get() == true) {
             finished = true;
+
         }
         if (t_timer.get() > 3) {
             finished = true;

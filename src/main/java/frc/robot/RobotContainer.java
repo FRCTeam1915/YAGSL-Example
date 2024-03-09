@@ -83,10 +83,10 @@ public class RobotContainer {
     configureBindings();
 
     SmartDashboard.putData("Autonomous Setting", autoMode);
-    autoMode.addOption("Amp Side", "Amp Side Auto");
-    autoMode.setDefaultOption("Middle Amp Side", "Middle Amp Auto");
-    autoMode.addOption("Middle Not Amp Side", "Middle Not Amp Side");
-    autoMode.addOption("Not Amp Side", "Not Amp Auto");
+    autoMode.addOption("Amp Side", "Blue Amp Side Auto");
+    autoMode.setDefaultOption("Middle Amp Side", "Blue Middle Amp Auto");
+    autoMode.addOption("Middle Not Amp Side", "Blue Middle Not Amp Side");
+    autoMode.addOption("Not Amp Side", "Blue Not Amp Auto");
     autoMode.addOption("One Note", "One Note Auto");
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,

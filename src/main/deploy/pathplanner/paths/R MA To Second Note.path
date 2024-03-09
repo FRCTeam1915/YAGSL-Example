@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.413628281802018,
-        "y": 5.53650223579517
+        "x": 15.02567040912257,
+        "y": 5.507130871149041
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0731103843082623,
-        "y": 6.4910715867943365
+        "x": 13.454302400554711,
+        "y": 6.10924384639467
       },
       "isLocked": false,
-      "linkedName": "Middle Start"
+      "linkedName": "Red Middle Start"
     },
     {
       "anchor": {
-        "x": 5.9380700579582975,
-        "y": 6.203616043595724
+        "x": 9.988481372311583,
+        "y": 6.212043622656119
       },
       "prevControl": {
-        "x": 4.930565497494631,
-        "y": 6.6047521185951465
+        "x": 10.70078786447776,
+        "y": 6.496966219522589
       },
       "nextControl": {
-        "x": 6.941989447373875,
-        "y": 5.803907397809891
+        "x": 9.401054079389018,
+        "y": 5.977072705487094
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.111667859701926,
-        "y": 5.755836238945098
+        "x": 8.328999269805339,
+        "y": 5.771473152964195
       },
       "prevControl": {
-        "x": 7.477313136447026,
-        "y": 5.7091925092940015
+        "x": 8.887055198081773,
+        "y": 5.742101788318068
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MA Second Note"
+      "linkedName": "Red MA Second Note"
     }
   ],
   "rotationTargets": [],
@@ -55,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Blue Middle Right",
+  "folder": "Red Middle Amp Side",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

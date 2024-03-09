@@ -52,8 +52,8 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double setPoint1 = 0.452; // Originally 0.502
-    public static final double setPoint2 = 0.712; // Originally 0.709
+    public static final double setPoint1 = 0.883; // To Amp
+    public static final double setPoint2 = 0.614; // To Speaker
 
   }
 

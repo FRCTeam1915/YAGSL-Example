@@ -3,11 +3,14 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "Amp Side Paths",
-    "Middle Not Amp Paths",
-    "Middle Right Paths",
-    "New Folder",
-    "Not Amp Side Paths"
+    "Blue Amp Side",
+    "Blue Middle Not Amp",
+    "Blue Middle Right",
+    "Blue Not Amp Side ",
+    "Red Not Amp",
+    "Red Amp Side",
+    "Red Middle Amp Side",
+    "Red Middle Not Amp"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 13.73333036469293,
+        "x": 13.718644682369867,
         "y": 5.507130871149041
       },
       "prevControl": {
-        "x": 14.629638354850327,
+        "x": 14.614952672527263,
         "y": 5.507130871149041
       },
       "nextControl": null,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "New Folder",
+  "folder": "Red Middle Amp Side",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0
