@@ -1,8 +1,5 @@
 package frc.robot.commands;
 import java.nio.ByteBuffer;
-
-
-
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 
@@ -54,7 +51,7 @@ public class ledControl {
             System.err.println("Err(ledControl): LEDI2C Device Not Detected.");
         }*/
     }
-    I2C Wire = new I2C(Port.kMXP, m_deviceAddress);
+    I2C Wire = new I2C(Port.kMXP, 85);
 
     /**
      * Sets the LEDs to a solid color
