@@ -37,7 +37,6 @@ public class loadShooterOff extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // resets all of the load shooter variables
         // turns off all motors
         shooter.shooterMotorOne.set(0);
         shooter.shooterMotorTwo.set(0);

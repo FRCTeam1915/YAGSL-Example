@@ -204,7 +204,7 @@ public class RobotContainer {
     Trigger leftTrigger = intakeXbox.leftTrigger();
     leftTrigger.whileTrue(new shooter(-.1));
     Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new loadShooter(lowerMotor, upperMotor));
+    leftBumper.onTrue(new loadShooter(lowerMotor, upperMotor));
     leftBumper.onFalse(new loadShooterOff());
 
     // Climbing commands

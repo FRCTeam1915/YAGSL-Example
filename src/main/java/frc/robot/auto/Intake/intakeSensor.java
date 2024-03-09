@@ -20,10 +20,12 @@ import frc.robot.Robot;
 public class intakeSensor extends Command {
     /** Creates a new shooter. */
     boolean finished = false;
+    double wait;
 
-    public intakeSensor() {
+    public intakeSensor(double wait) {
         // Use addRequirements() here to declare subsystem dependencies.
         boolean finished = false;
+        this.wait = wait;
     }
 
     // Called when the command is initially scheduled.
@@ -41,7 +43,7 @@ public class intakeSensor extends Command {
             finished = true;
 
         }
-        if (t_timer.get() > 3) {
+        if (t_timer.get() > wait) {
             finished = true;
         }
 
