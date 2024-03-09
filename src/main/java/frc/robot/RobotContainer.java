@@ -134,7 +134,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", new autoIntake(upperMotor, lowerMotor, -.8, 1));
     NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
     NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
-    NamedCommands.registerCommand("AutoLoad", new loadShooter());
     armSubsystem.setDefaultCommand(new ArmJoystickCmd(armSubsystem, 0));
 
   }
@@ -205,7 +204,7 @@ public class RobotContainer {
     Trigger leftTrigger = intakeXbox.leftTrigger();
     leftTrigger.whileTrue(new shooter(-.1));
     Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new loadShooter());
+    leftBumper.whileTrue(new loadShooter(lowerMotor, upperMotor));
     leftBumper.onFalse(new loadShooterOff());
 
     // Climbing commands

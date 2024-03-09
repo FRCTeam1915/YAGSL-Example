@@ -38,9 +38,6 @@ public class loadShooterOff extends Command {
     @Override
     public void execute() {
         // resets all of the load shooter variables
-        loadShooter.finished = false;
-        loadShooter.trig1 = false;
-        loadShooter.trig2 = false;
         // turns off all motors
         shooter.shooterMotorOne.set(0);
         shooter.shooterMotorTwo.set(0);

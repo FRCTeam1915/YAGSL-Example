@@ -4,81 +4,30 @@
 
 package frc.robot.auto.Shooter;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+
 import frc.robot.Robot;
-import frc.robot.commands.intake;
-import frc.robot.commands.shooter;
-import frc.robot.auto.Shooter.autoShooterStop;
 
-public class loadShooter extends Command {
-    /** Creates a new shooter. */
-    public static boolean trig1 = false;
-    public static boolean trig2 = false;
-    public static boolean finished = false;
+import frc.robot.auto.Intake.autoConstantIntakeStop;
 
-    public loadShooter() {
-        // Use addRequirements() here to declare subsystem dependencies.
-    }
+import frc.robot.auto.Intake.autoIntakeStart;
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
+public class loadShooter extends SequentialCommandGroup {
 
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
-        // starts the motors if all triggers are false
-        if (Robot.shooterSensor.get() == false && trig1 == false && trig2 == false) {
-            // starts shooter motors
-            shooter.shooterMotorOne.set(0.1);
-            shooter.shooterMotorTwo.set(-0.1);
-            // sets shooters to brake
-            shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
-            shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
-            // starts intake motors
-            intake.motorOne.set(ControlMode.PercentOutput, -.4);
-            intake.motorTwo.set(ControlMode.PercentOutput, -.4);
-        }
-        // creates a new timer
-        Timer w_Timer = new Timer();
-        // restarts the timer
-        w_Timer.restart();
-        // only true if first cycle with sensor being true
-        if (Robot.shooterSensor.get() && finished == false) {
-            System.out.println("seen");
-            // restarts timer
-            w_Timer.restart();
-            // only checks if certin amount of time has passed
-            if (w_Timer.get() > 0.5) {
-                // checks for sensor in shooter
-                if (Robot.shooterSensor.get()) {
-                    System.out.println("trig1");
+    public loadShooter(TalonSRX lowerMotor, TalonSRX upperMotor) {
 
-                    finished = true;
-                    // turns off motors
-                    shooter.shooterMotorOne.set(0);
-                    shooter.shooterMotorTwo.set(0);
-                    intake.motorOne.set(ControlMode.PercentOutput, 0);
-                    intake.motorTwo.set(ControlMode.PercentOutput, 0);
-                }
-            }
-        }
-    }
+        addCommands(
+                new autoIntakeStart(lowerMotor, upperMotor, 0.5),
+                new autoShooterStart(0.8),
+                new WaitUntilCommand((() -> Robot.intakeSensor.get())),
+                new WaitUntilCommand((() -> !Robot.intakeSensor.get())),
+                new WaitUntilCommand((() -> Robot.intakeSensor.get())),
+                new autoConstantIntakeStop(lowerMotor),
+                new autoShooterStop());
 
-    // Called once the command ends or is interrupted.
-
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return finished;
     }
 }
