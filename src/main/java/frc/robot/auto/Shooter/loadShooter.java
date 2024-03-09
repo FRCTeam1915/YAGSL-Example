@@ -36,24 +36,35 @@ public class loadShooter extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        // starts the motors if all triggers are false
         if (Robot.shooterSensor.get() == false && trig1 == false && trig2 == false) {
+            // starts shooter motors
             shooter.shooterMotorOne.set(0.1);
             shooter.shooterMotorTwo.set(-0.1);
+            // sets shooters to brake
             shooter.shooterMotorOne.setIdleMode(IdleMode.kBrake);
             shooter.shooterMotorTwo.setIdleMode(IdleMode.kBrake);
+            // starts intake motors
             intake.motorOne.set(ControlMode.PercentOutput, -.4);
             intake.motorTwo.set(ControlMode.PercentOutput, -.4);
         }
+        // creates a new timer
         Timer w_Timer = new Timer();
+        // restarts the timer
         w_Timer.restart();
+        // only true if first cycle with sensor being true
         if (Robot.shooterSensor.get() && finished == false) {
             System.out.println("seen");
+            // restarts timer
             w_Timer.restart();
-
-            if (w_Timer.get() > 1.0) {
+            // only checks if certin amount of time has passed
+            if (w_Timer.get() > 0.5) {
+                // checks for sensor in shooter
                 if (Robot.shooterSensor.get()) {
                     System.out.println("trig1");
+
                     finished = true;
+                    // turns off motors
                     shooter.shooterMotorOne.set(0);
                     shooter.shooterMotorTwo.set(0);
                     intake.motorOne.set(ControlMode.PercentOutput, 0);
