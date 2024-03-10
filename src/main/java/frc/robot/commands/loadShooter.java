@@ -36,6 +36,7 @@ public class loadShooter extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        runmotors();
     }
 
     public void runmotors() {
@@ -46,7 +47,8 @@ public class loadShooter extends Command {
         intake.motorOne.set(ControlMode.PercentOutput, -.4);
         intake.motorTwo.set(ControlMode.PercentOutput, -.4);
     }
-    public void stopmotors () {
+
+    public void stopmotors() {
         shooter.shooterMotorOne.set(0);
         shooter.shooterMotorTwo.set(0);
         intake.motorOne.set(ControlMode.PercentOutput, 0);
@@ -61,32 +63,36 @@ public class loadShooter extends Command {
          * trig 2 is whe we encounter the hole
          * sensor is the current sensor state
          * 
-         *   | trig1 | trig2 | sensor |
-         *   --------------------------
-         *   |   0   |   0   |    0   |  run motors
-         *   |   0   |   0   |    1   |  keep running, set trig 1
-         *   |   0   |   1   |    0   |  NA
-         *   |   0   |   1   |    1   |  NA
-         *   |   1   |   0   |    0   |  keep running, set trig 2, we are in the hole
-         *   |   1   |   0   |    1   |  keep running 
-         *   |   1   |   1   |    0   |  keep running
-         *   |   1   |   1   |    1   |  stop motors, we are at the second part
+         * | trig1 | trig2 | sensor |
+         * --------------------------
+         * | 0 | 0 | 0 | run motors
+         * | 0 | 0 | 1 | keep running, set trig 1
+         * | 0 | 1 | 0 | NA
+         * | 0 | 1 | 1 | NA
+         * | 1 | 0 | 0 | keep running, set trig 2, we are in the hole
+         * | 1 | 0 | 1 | keep running
+         * | 1 | 1 | 0 | keep running
+         * | 1 | 1 | 1 | stop motors, we are at the second part
          * 
          */
 
         boolean sensor = Robot.shooterSensor.get();
         System.out.println("" + trig1 + trig2 + sensor);
+        if (trig1 == false && trig2 == false && sensor == false) {
+            runmotors();
+            finished = false;
+        }
         if (trig1 == false && trig2 == false && sensor == true) {
             trig1 = true;
-            //System.out.println("                 Trig 1" + trig1);
+            // System.out.println(" Trig 1" + trig1);
         }
         if (trig1 == true && trig2 == false && sensor == false) {
             trig2 = true;
-            //System.out.println("Trig 2");
+            // System.out.println("Trig 2");
         }
         if (trig1 == true && trig2 == true && sensor == true) {
             finished = true;
-            //System.out.println("Done");
+            // System.out.println("Done");
         }
     }
 
@@ -98,10 +104,11 @@ public class loadShooter extends Command {
         trig2 = false;
         System.out.println("End load shooter!");
     }
+
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //stopmotors();
+        // stopmotors();
         return finished;
     }
 }

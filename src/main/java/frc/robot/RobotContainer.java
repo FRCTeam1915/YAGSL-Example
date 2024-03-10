@@ -58,8 +58,7 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
 
-  final ShooterSubsystem ShooterSS = new ShooterSubsystem(); 
-
+  final ShooterSubsystem ShooterSS = new ShooterSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -193,8 +192,7 @@ public class RobotContainer {
     // Moves shooter to set amp
     Trigger povDown = intakeXbox.povDown();
     povDown.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
-    Trigger leftBumper = intakeXbox.leftBumper();
-    leftBumper.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
+
     // Moves shooter to set intake
     Trigger povUp = intakeXbox.povUp();
     povUp.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint2).repeatedly());
@@ -209,9 +207,11 @@ public class RobotContainer {
     // Shoots note reverse
     Trigger leftTrigger = intakeXbox.leftTrigger();
     leftTrigger.whileTrue(new shooter(-.1));
+    Trigger leftBumper = intakeXbox.leftBumper();
+    leftBumper.whileTrue(new loadShooter(ShooterSS));
+    // Xbutton.onFalse(new loadShooterOff());
     Trigger Xbutton = intakeXbox.x();
-    Xbutton.whileTrue(new loadShooter(ShooterSS));
-    //Xbutton.onFalse(new loadShooterOff());
+    Xbutton.whileTrue(new intake(lowerMotor, upperMotor, .75));
 
     // Climbing commands
     // Climb up
