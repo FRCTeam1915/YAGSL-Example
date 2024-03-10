@@ -24,18 +24,19 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.auto.Intake.autoIntake;
 import frc.robot.auto.Intake.autoPickUp;
 import frc.robot.auto.Shooter.autoShooter;
-import frc.robot.auto.Shooter.loadShooter;
 import frc.robot.auto.Shooter.loadShooterOff;
 import frc.robot.auto.Intake.autoConstantIntake;
 import frc.robot.commands.ArmJoystickCmd;
 import frc.robot.commands.ArmPIDCmd;
 import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
+import frc.robot.commands.loadShooter;
 import frc.robot.commands.motorArm;
 import frc.robot.commands.pickUp;
 import frc.robot.commands.shooter;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -56,6 +57,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
+
+  final ShooterSubsystem ShooterSS = new ShooterSubsystem(); 
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -206,8 +210,8 @@ public class RobotContainer {
     Trigger leftTrigger = intakeXbox.leftTrigger();
     leftTrigger.whileTrue(new shooter(-.1));
     Trigger Xbutton = intakeXbox.x();
-    Xbutton.whileTrue(new loadShooter());
-    Xbutton.onFalse(new loadShooterOff());
+    Xbutton.whileTrue(new loadShooter(ShooterSS));
+    //Xbutton.onFalse(new loadShooterOff());
 
     // Climbing commands
     // Climb up

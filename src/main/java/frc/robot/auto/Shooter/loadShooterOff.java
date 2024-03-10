@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.intake;
+import frc.robot.commands.loadShooter;
 import frc.robot.commands.shooter;
 import frc.robot.auto.Shooter.autoShooterStop;
 import frc.robot.auto.Shooter.*;
@@ -37,7 +38,7 @@ public class loadShooterOff extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        loadShooter.finished = false;
+        //loadShooter.finished = false;
     }
 
     // Called once the command ends or is interrupted.
