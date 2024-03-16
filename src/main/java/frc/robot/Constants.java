@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -40,6 +42,10 @@ public final class Constants {
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
+  public static final Transform3d kFrontLeftCamToCenter = new Transform3d(
+      new Translation3d(Units.inchesToMeters(14 - 1.25), Units.inchesToMeters(4), Units.inchesToMeters(7.5 + 1.75)),
+      new Rotation3d(Units.degreesToRadians(-5), Units.degreesToRadians(-20), Units.degreesToRadians(20)));
+
   public static final class ArmConstants {
     public static final int armMotorOne = 35;
     public static final int armMotorTwo = 36;
@@ -52,8 +58,8 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
 
-    public static final double setPoint1 = 0.883; // Originally 0.502
-    public static final double setPoint2 = 0.614; // Originally 0.709
+    public static final double setPoint2 = 0.883; // Originally 0.502
+    public static final double setPoint1 = 0.614; // Originally 0.709
 
   }
 

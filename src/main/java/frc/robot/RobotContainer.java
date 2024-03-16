@@ -5,12 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,9 +38,14 @@ import frc.robot.commands.pickUp;
 import frc.robot.commands.shooter;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DriverStationChecker;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import swervelib.imu.SwerveIMU;
+
 import java.io.File;
+import frc.robot.commands.ResetOdometryFromVision;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -53,11 +60,12 @@ import com.pathplanner.lib.auto.NamedCommands;
  * trigger mappings) should be declared here.
  */
 public class RobotContainer {
-
+  public static final DriverStationChecker S_DRIVERSTATIONCHECKER = new DriverStationChecker();
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  public final static SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
 
+  public static final Vision S_VISION = new Vision();
   final ShooterSubsystem ShooterSS = new ShooterSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -86,8 +94,8 @@ public class RobotContainer {
     configureBindings();
 
     SmartDashboard.putData("Autonomous Setting", autoMode);
-    autoMode.addOption("Amp Side", "Amp Side Auto");
-    autoMode.setDefaultOption("Middle Amp Side", "Middle Amp Auto");
+    autoMode.setDefaultOption("Amp Side", "Amp Side Auto");
+    autoMode.addOption("Middle Amp Side", "Middle Amp Auto");
     autoMode.addOption("Middle Not Amp Side", "Middle Not Amp Side");
     autoMode.addOption("Not Amp Side", "Not Amp Auto");
     autoMode.addOption("One Note", "One Note Auto");
@@ -138,9 +146,53 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
     NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
     armSubsystem.setDefaultCommand(new ArmJoystickCmd(armSubsystem, 0));
+    // Trigger changeDrive = driverXbox.rightBumper();
+    // Translation2d translation;
+    // changeDrive.onTrue(drivebase.drive(translation , driverXbox.getRightX(),
+    // false));
 
   }
+  // public void updatePoseEstimatorWithVisionBotPose() {
+  // PoseLatency visionBotPose = m_visionSystem.getPoseLatency();
+  // // invalid LL data
+  // if (visionBotPose.pose2d.getX() == 0.0) {
+  // return;
+  // }
 
+  // // distance from current pose to vision estimated pose
+  // double poseDifference =
+  // m_poseEstimator.getEstimatedPosition().getTranslation()
+  // .getDistance(visionBotPose.pose2d.getTranslation());
+
+  // if (m_visionSystem.areAnyTargetsValid()) {
+  // double xyStds;
+  // double degStds;
+  // // multiple targets detected
+  // if (m_visionSystem.getNumberOfTargetsVisible() >= 2) {
+  // xyStds = 0.5;
+  // degStds = 6;
+  // }
+  // // 1 target with large area and close to estimated pose
+  // else if (m_visionSystem.getBestTargetArea() > 0.8 && poseDifference < 0.5) {
+  // xyStds = 1.0;
+  // degStds = 12;
+  // }
+  // // 1 target farther away and estimated pose is close
+  // else if (m_visionSystem.getBestTargetArea() > 0.1 && poseDifference < 0.3) {
+  // xyStds = 2.0;
+  // degStds = 30;
+  // }
+  // // conditions don't match to add a vision measurement
+  // else {
+  // return;
+  // }
+
+  // m_poseEstimator.setVisionMeasurementStdDevs(
+  // VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(degStds)));
+  // m_poseEstimator.addVisionMeasurement(visionBotPose.pose2d,
+  // Timer.getFPGATimestamp() - visionBotPose.latencySeconds);
+  // }
+  // }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
    * created via the
@@ -159,12 +211,13 @@ public class RobotContainer {
 
     driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox.b().whileTrue(
-        Commands.deferredProxy(() -> drivebase.driveToPose(
-            new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    // driverXbox.b().whileTrue(
+    // Commands.deferredProxy(() -> drivebase.driveToPose(
+    // new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock,
     // drivebase).repeatedly());
 
+    driverXbox.b().onTrue(new ResetOdometryFromVision());
     // Intake and shooter commands
     // Turns the lower motor and holds note in intake
     Trigger rightBumper = intakeXbox.rightBumper();

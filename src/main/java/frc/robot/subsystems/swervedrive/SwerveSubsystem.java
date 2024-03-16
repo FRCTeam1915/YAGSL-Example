@@ -10,19 +10,26 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.AutonConstants;
+import frc.robot.LimelightHelpers;
+
 import java.io.File;
 import java.util.function.DoubleSupplier;
 import org.photonvision.PhotonCamera;
@@ -38,7 +45,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase {
-
+  public ADIS16470_IMU m_gyro = new ADIS16470_IMU();
   /**
    * Swerve drive object.
    */
@@ -420,6 +427,49 @@ public class SwerveSubsystem extends SubsystemBase {
     return getPose().getRotation();
   }
 
+  // private final SwerveDriveKinematics m_kinematics =
+  // new SwerveDriveKinematics(
+  // m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
+  // m_backRightLocation);
+
+  // private final SwerveDrivePoseEstimator m_poseEstimator =
+  // new SwerveDrivePoseEstimator(
+  // m_kinematics,
+  // m_gyro.getRotation2d(),
+  // new SwerveModulePosition[] {
+  // m_frontLeft.getPosition(),
+  // m_frontRight.getPosition(),
+  // m_backLeft.getPosition(),
+  // m_backRight.getPosition()
+  // },
+  // new Pose2d(),
+  // VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+  // VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+
+  public void addVisionMeasurement(Pose2d pose, double timestamp) {
+    if (pose.getTranslation().getDistance(swerveDrive.getPose().getTranslation()) < 1.0
+        && pose.getRotation().minus(swerveDrive.getPose().getRotation()).getDegrees() < 30.0)
+      swerveDrive.addVisionMeasurement(pose, timestamp);
+  }
+
+  public void updateOdometry() {
+    // m_poseEstimator.update(
+    // m_gyro.getRotation2d(),
+    // new SwerveModulePosition[] {
+    // m_frontLeft.getPosition(),
+    // m_frontRight.getPosition(),
+    // m_backLeft.getPosition(),
+    // m_backRight.getPosition()
+    // });
+    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    // if(limelightMeasurement.tagCount >= 2)
+    // {
+    // m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+    addVisionMeasurement(
+        limelightMeasurement.pose,
+        limelightMeasurement.timestampSeconds);
+  }
+
   /**
    * Get the chassis speeds based on controller input of 2 joysticks. One for
    * speeds in which direction. The other for
@@ -503,6 +553,10 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public void lock() {
     swerveDrive.lockPose();
+  }
+
+  public ChassisSpeeds getFieldOrientedVelocity() {
+    return swerveDrive.getFieldVelocity();
   }
 
   /**
