@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.413628281802018,
+        "y": 5.53650223579517
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.0731103843082623,
+        "y": 6.4910715867943365
+      },
+      "isLocked": false,
+      "linkedName": "Middle Start"
+    },
+    {
+      "anchor": {
+        "x": 5.9380700579582975,
+        "y": 6.203616043595724
+      },
+      "prevControl": {
+        "x": 4.930565497494631,
+        "y": 6.6047521185951465
+      },
+      "nextControl": {
+        "x": 6.941989447373875,
+        "y": 5.803907397809891
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.111667859701926,
+        "y": 5.755836238945098
+      },
+      "prevControl": {
+        "x": 7.477313136447026,
+        "y": 5.7091925092940015
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "MA Second Note"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Middle Right Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
   private Timer disabledTimer;
   public static DigitalInput shooterSensor = new DigitalInput(0);
   public static DigitalInput intakeSensor = new DigitalInput(1);
-  public static DutyCycleEncoder shooterEncoder = new DutyCycleEncoder(2);
 
   public Robot() {
     instance = this;
@@ -82,7 +81,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putBoolean("ShooterSensor", shooterSensor.get());
     SmartDashboard.putBoolean("IntakeSensor", intakeSensor.get());
-    SmartDashboard.putNumber("ShooterPosition", shooterEncoder.getAbsolutePosition());
   }
 
   /**

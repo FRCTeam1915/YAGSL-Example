@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6777587794889373,
-        "y": 4.361647649950041
+        "x": 0.8519768539376105,
+        "y": 4.412374979263219
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6777587794889393,
-        "y": 4.361647649950041
+        "x": 1.71844879927376,
+        "y": 3.9594718740749952
       },
       "isLocked": false,
       "linkedName": "NA Shooter"
     },
     {
       "anchor": {
-        "x": 8.04997130566712,
-        "y": 0.7489697984762701
+        "x": 8.037037892257603,
+        "y": 0.7742859122081884
       },
       "prevControl": {
-        "x": 7.049971305667119,
-        "y": 0.7489697984762701
+        "x": 6.121040309083383,
+        "y": 0.5943696154752866
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Not Amp Side Paths",
   "previewStartingState": {
-    "rotation": -58.46520809481169,
+    "rotation": -59.807959682167166,
     "velocity": 0
   },
   "useDefaultConstraints": true

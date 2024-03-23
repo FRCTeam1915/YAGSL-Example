@@ -16,19 +16,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.auto.Intake.autoIntake;
 import frc.robot.auto.Intake.autoPickUp;
 import frc.robot.auto.Shooter.autoShooter;
 import frc.robot.auto.Shooter.loadShooter;
 import frc.robot.auto.Intake.autoConstantIntake;
+import frc.robot.commands.ArmJoystickCmd;
+import frc.robot.commands.ArmPIDCmd;
 import frc.robot.commands.climbing;
 import frc.robot.commands.intake;
 import frc.robot.commands.motorArm;
 import frc.robot.commands.shooter;
-import frc.robot.commands.shooterArticulation;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -57,10 +61,12 @@ public class RobotContainer {
   // Motors defined
   public static TalonSRX lowerMotor = new TalonSRX(Constants.pickUpID);
   public static TalonSRX upperMotor = new TalonSRX(Constants.upperMotorID);
-  public static TalonFX armMotorOne = new TalonFX(Constants.armMotorOne);
-  public static TalonFX armMotorTwo = new TalonFX(Constants.armMotorTwo);
+  // public static TalonFX armMotorOne = new TalonFX(Constants.armMotorOne);
+  // public static TalonFX armMotorTwo = new TalonFX(Constants.armMotorTwo);
   public static TalonSRX climbMotorOne = new TalonSRX(Constants.climbOneID);
   public static TalonSRX climbMotorTwo = new TalonSRX(Constants.climbTwoID);
+
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -75,7 +81,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("Autonomous Setting", autoMode);
     autoMode.addOption("Amp Side", "Amp Side Auto");
-    // autoMode.setDefaultOption("Position 2 - Middle", "");
+    autoMode.setDefaultOption("Middle", "Middle Amp Auto");
     autoMode.addOption("Not Amp Side", "Not Amp Auto");
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
@@ -123,6 +129,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", new autoIntake(upperMotor, lowerMotor, -.8, 1));
     NamedCommands.registerCommand("IntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 2));
     NamedCommands.registerCommand("LongIntakeConstant", new autoConstantIntake(lowerMotor, -0.8, 4));
+    armSubsystem.setDefaultCommand(new ArmJoystickCmd(armSubsystem, 0));
+
   }
 
   /**
@@ -163,18 +171,22 @@ public class RobotContainer {
     leftBumper.whileTrue(new intake(lowerMotor, upperMotor, .5));
 
     // Articulates shooter so it can shoot into the amp
-    // Moves shooter down
-    Trigger povDown = intakeXbox.povDown();
-    povDown.whileTrue(new shooterArticulation(armMotorOne, armMotorTwo, true));
-    // Moves shooter up
-    Trigger povUp = intakeXbox.povUp();
-    povUp.whileTrue(new shooterArticulation(armMotorOne, armMotorTwo, false));
     // Moves shooter down slowly
     Trigger povLeft = intakeXbox.povLeft();
-    povLeft.whileTrue(new motorArm(armMotorOne, armMotorTwo, .025));
+    // povLeft.whileTrue(new motorArm(armMotorOne, armMotorTwo, .025));
+    povLeft.whileTrue(new ArmJoystickCmd(armSubsystem, 0.025));
+
     // Moves shooter up slowly
     Trigger povRight = intakeXbox.povRight();
-    povRight.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.025));
+    // povRight.whileTrue(new motorArm(armMotorOne, armMotorTwo, -.025));
+    povRight.whileTrue(new ArmJoystickCmd(armSubsystem, -0.025));
+
+    // Moves shooter to set point 1
+    Trigger povDown = intakeXbox.povDown();
+    povDown.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint1).repeatedly());
+    // Moves shooter to set point 2
+    Trigger povUp = intakeXbox.povUp();
+    povUp.whileTrue(new ArmPIDCmd(armSubsystem, ArmConstants.setPoint2).repeatedly());
 
     // Shooter commands
     // Shoots note for speaker
@@ -206,7 +218,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Amp Side Auto");
+    return drivebase.getAutonomousCommand(autoMode.getSelected());
   }
 
   public void setDriveMode() {
