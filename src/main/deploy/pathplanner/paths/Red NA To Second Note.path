@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 15.671840431337248,
+        "y": 4.361647649950041
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 15.378131986250944,
+        "y": 4.229464951034706
+      },
+      "isLocked": false,
+      "linkedName": "Red NA Start"
+    },
+    {
+      "anchor": {
+        "x": 8.505227457682107,
+        "y": 0.7489697984762701
+      },
+      "prevControl": {
+        "x": 11.471735286941056,
+        "y": 0.8958266217069119
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red NA Second Note"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Red Not Amp",
+  "previewStartingState": {
+    "rotation": -120.44,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

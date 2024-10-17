@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 13.703959000046703,
+        "y": 6.975699103460563
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 14.252268179086936,
+        "y": 6.975699103460563
+      },
+      "isLocked": false,
+      "linkedName": "Red Amp To First Note"
+    },
+    {
+      "anchor": {
+        "x": 15.73058316063126,
+        "y": 6.7994709155837985
+      },
+      "prevControl": {
+        "x": 15.231296788037515,
+        "y": 7.12259738188233
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Red AS Start"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 118.87,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Red Amp Side",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
